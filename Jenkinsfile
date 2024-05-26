@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Poll SCM and checkout the GitHub repository
-                git branch: 'main' 'https://github.com/NoelXP/Application-terraform-ansible-aws-pipe.git'
+                git branch: 'main', url: 'https://github.com/NoelXP/Application-terraform-ansible-aws-pipe.git'
             }
         }
         
