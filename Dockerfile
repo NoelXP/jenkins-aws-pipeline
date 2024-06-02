@@ -8,5 +8,24 @@ RUN echo "deb [arch=$(dpkg --print-architecture) \
   https://download.docker.com/linux/debian \
   $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
 RUN apt-get update && apt-get install -y docker-ce-cli
+
+
+
+
+
+# Install necessary packages (curl and unzip)
+RUN apt-get update && \
+    apt-get install -y curl unzip && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
+# Download and install Terraform
+ARG TERRAFORM_VERSION=1.8.4
+RUN curl -LO https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip \
+    && unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /usr/local/bin \
+    && rm terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+
+# Display Terraform version
+RUN terraform version
 USER jenkins
 RUN jenkins-plugin-cli --plugins "blueocean docker-workflow"
